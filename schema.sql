@@ -15,4 +15,5 @@ create table role (
 Create table employee (
   id int not null auto_increment primary key,
   first_name varchar(30),
-  last_name varchar(30),
+  last_name varchar(30)
+);
