@@ -18,7 +18,7 @@ function displayMenu() {
     inquirer.prompt({
         type: "list",
         message: "choose selection",
-        choices: ["add employee", "add department", "add role", "view employee", "view role", "view department", "update employee role",],
+        choices: ["add employee", "add department", "add role", "view employees", "view roles", "view departments", "update employee role",],
         name: "selection"
 
     })
@@ -26,10 +26,10 @@ function displayMenu() {
             if (response.selection === "add department") {
                 addDepartment()
             }
-            else if (response.selection === "view department") {
+            else if (response.selection === "view departments") {
                 viewDepartment()
             }
-            else if (response.selection === "add roles") {
+            else if (response.selection === "add role") {
                 addRoles()
             }
             else if (response.selection === "view roles")
@@ -46,7 +46,7 @@ function viewDepartment() {
 }
 
 function viewRoles() {
-    connection.query("select * from roles", function (err, results) {
+    connection.query("select * from role", function (err, results) {
         console.table(results)
         displayMenu()
     })
@@ -54,18 +54,40 @@ function viewRoles() {
 
 
 function addRoles() {
-    inquirer.prompt({
-        type: "input",
-        message: "what is the role?",
-        name: "RoleName",
-        choices: ["salary", "title", "department_id"]
+    connection.query("select * from department", function (err, results) {
+        console.table(results)
+
+
+        // create a choice list array from department rows
+        inquirer.prompt([{
+            type: "input",
+            message: "what is the role?",
+            name: "RoleName",
+            // choices: ["salary", "title", "department_id"]?
+        },
+        {
+            type: "number",
+            message: "what is the salary?",
+            name: "Salary",
+
+        },
+        {
+            type: "input",
+            message: "what department",
+            name: "Department"
+        }
+            // {
+
+            // }
+        ])
+            .then(function (response) {
+                connection.query(`insert into role(title, salary, department_id) values ("${response["RoleName"]}",${response.Salary},1) `, function (err, results) {
+                    if (err) throw err;
+                    console.log("role added")
+                    displayMenu()
+                })
+            }).catch(err => console.log(err))
     })
-        .then(function (response) {
-            connection.query(`insert into role(title, salary, department) values ("${response["Role name"]}",50000,1) `, function (err, results) {
-                console.log("role added")
-                displayMenu()
-            }).catch(err = console.log(err))
-        })
 }
 
 function addDepartment() {
