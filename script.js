@@ -81,7 +81,7 @@ function addRoles() {
             // }
         ])
             .then(function (response) {
-                connection.query(`insert into role(title, salary, department_id) values ("${response["RoleName"]}",${response.Salary},1) `, function (err, results) {
+                connection.query(`insert into role(title, salary, department_id) values ("${response["RoleName"]}",${response.Salary},${response["department_id"]}) `, function (err, results) {
                     if (err) throw err;
                     console.log("role added")
                     displayMenu()
