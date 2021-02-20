@@ -74,43 +74,103 @@ function viewEmployees() {
 }
 // Add employees
 function addEmployee() {
-    connection.query("select * from department", function (err, results) {
+    connection.query("select * from role", function (err, results) {
         console.table(results)
 
+        //     role choices 
+        //     let departmentChoices = []
+        //     for (let i = 0; i < results.length; i++) {
+        //         console.log(results[i])
+        //         departmentChoices.push({
+        //             value: results[i].id,
+        //             name: results[i].name
+        //         })
+        //         console.log(departmentChoices)
+        //     }
+        //     console.log(departmentChoices)
+
+
+        // employee choices 
+
+        // connection.query("select * from employee", function (err, results) {
+        //     console.log(results)
+        //     let departmentChoices = []
+        //     for (let i = 0; i < results.length; i++) {
+        //         console.log(results[i])
+        //         departmentChoices.push({
+        //             value: results[i].id,
+        //             name: results[i].name
+        //         })
+        //         console.log(departmentChoices)
+        //     }
+        //     console.log(departmentChoices)
+
+
+        // query for employees
+
+
+
+
+
+
+        // create a choice list array for roles and employees```` 
+        inquirer.prompt([
+            // {
+            //     type: "input",
+            //     message: "what is the employee?",
+            //     name: "department_id",
+            // },
+            {
+                type: "input",
+                message: "what is employee first name",
+                name: "first_name",
+            },//     console.log(results)
+            //     let departmentChoices = []
+            //     for (let i = 0; i < results.length; i++) {
+            //         console.log(results[i])
+            //         departmentChoices.push({
+            //             value: results[i].id,
+            //             name: results[i].name
+            //         })
+            //         console.log(departmentChoices)
+            //     }
+            //     console.log(departmentChoices)
+
+            {
+                type: "input",
+                message: "what is employee last name?",
+                name: "last_Name"
+            },
+            //    what is role choice array
+            //    what is the employees manager/ employee choice array
+            //    create choices array for roles and employees
+        ])
+            // Employee response
+            .then(function (response) {
+                connection.query(`insert into employee(first_name, last_name, role_id) values ("${response["first_name"]}","${response.last_Name}",4) `, function (err, results) {
+                    if (err) throw err;
+                    console.log("employee added")
+                    displayMenu()
+                })
+            }).catch(err => console.log(err))
+        // }) 
     })
-    // create a choice list array from department_id````
-    inquirer.prompt([{
-        type: "input",
-        message: "what is the employee?",
-        name: "department_id",
-    },
-    {
-        type: "input",
-        message: "what is employee first name",
-        name: "first_Name",
-    },
-    {
-        type: "input",
-        message: "what is employee last name?",
-        name: "last_Name"
-    }
-        // Employee response
-        .then(function (response) {
-            connection.query(`insert into employee(first_name, last_name, role_id) values ("${response["first_name"]}",${response.last_name},${response["role_id"]}) `, function (err, results) {
-                if (err) throw err;
-                console.log("employee added")
-                displayMenu()
-            })
-        }).catch(err => console.log(err))
-    ])
 }
 
 //  Add roles
 function addRoles() {
     connection.query("select * from department", function (err, results) {
-        console.table(results)
-
-
+        console.log(results)
+        let departmentChoices = []
+        for (let i = 0; i < results.length; i++) {
+            console.log(results[i])
+            departmentChoices.push({
+                value: results[i].id,
+                name: results[i].name
+            })
+            console.log(departmentChoices)
+        }
+        console.log(departmentChoices)
         // create a choice list array from department rows 
         inquirer.prompt([{
             type: "input",
@@ -125,15 +185,17 @@ function addRoles() {
 
         },
         {
-            type: "input",
+            type: "list",
             message: "what department",
-            name: "Department"
+            name: "Department",
+            choices: departmentChoices
         }
 
         ])
             .then(function (response) {
-                connection.query(`insert into role(title, salary, department_id) values ("${response["RoleName"]}",${response.Salary},${response["department_id"]}) `, function (err, results) {
-                    ````
+                console.log(response)
+                connection.query(`insert into role(title, salary, department_id) values ("${response["RoleName"]}",${response.Salary},${response["Department"]}) `, function (err, results) {
+
                     if (err) throw err;
                     console.log("role added")
                     displayMenu()
