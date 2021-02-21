@@ -1,4 +1,5 @@
 var inquirer = require("inquirer");
+const { up } = require("inquirer/lib/utils/readline");
 var mysql = require("mysql");
 require("console.table");
 var connection = mysql.createConnection({
@@ -42,6 +43,8 @@ function displayMenu() {
         addEmployee();
       } else if (response.selection === "view employees") {
         viewEmployees();
+      } else if (response.selection === "update roles") {
+        updateRole();
       }
     });
 }
@@ -218,7 +221,34 @@ function addDepartment() {
     });
 }
 
+//  Update Role
+
+// function updateRole (){
+// inquirer.prompt({
+//   type: "input",
+//   message:"Role you would like to update",
+//   name:"updateRole"
+// })
+
+// .then(function (response){
+// connection.query("select * from role_id", function (err, updateResults){
+// console.log(updateResults)
+// let updateRole = []
+// for (let i = 0; i < updateResults.length; i++) {
+//   console.log(updateResults[i].id)
+//   updateRole.push({
+//     value: results[i].id,
+//     name: results[i].name,
+//   })
+// }
+
+// }
+
+// )
+
+// })
+
+// }
 //  create update a role, create choices arrays for employees and roles,
 // questions which employee do you want to update what is there new role
 // then run update query (w3 schools)
-//
